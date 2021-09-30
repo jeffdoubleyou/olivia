@@ -200,5 +200,33 @@
       "Of course! Always at your service."
     ],
     "context": ""
+  },
+  {
+    "tag": "support",
+    "patterns": ["Help", "Can't place calls", "Register phone", "Phone register", "problem", "problem placing calls"],
+    "responses": ["Okay Let me get you over to our support department."],
+    "context": "",
+    "data": {
+        "command": "Transfer",
+        "arguments": "support,s,1",
+        "callbackUrl": "http://localhost:8080/test",
+        "callbackStore": "callback1"
+    }
+  },
+  {
+    "tag": "billing",
+    "patterns": [
+        "Billing",
+        "Payment",
+        "Pay my bill",
+        "Charges",
+        "Invoice",
+        "Check my balance",
+        "Problem with my bill",
+        "Credit Card",
+        "Bank transfer"
+    ],
+    "responses": ["Okay Let me get you over to our billing department."],
+    "context": ""
   }
 ]
