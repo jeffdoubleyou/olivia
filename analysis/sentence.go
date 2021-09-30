@@ -72,9 +72,9 @@ func (sentence Sentence) PredictTag(neuralNetwork network.Network) string {
 
 // RandomizeResponse takes the entry message, the response tag and the token and returns a random
 // message from res/datasets/intents.json where the triggers are applied
-func RandomizeResponse(locale, entry, tag, token string) (string, string) {
+func RandomizeResponse(locale, entry, tag, token string) (string, string, *Intent) {
 	if tag == DontUnderstand {
-		return DontUnderstand, util.GetMessage(locale, tag)
+		return DontUnderstand, util.GetMessage(locale, tag), nil
 	}
 
 	// Append the modules intents to the intents from res/datasets/intents.json
@@ -88,7 +88,7 @@ func RandomizeResponse(locale, entry, tag, token string) (string, string) {
 		// Reply a "don't understand" message if the context isn't correct
 		cacheTag, _ := userCache.Get(token)
 		if intent.Context != "" && cacheTag != intent.Context {
-			return DontUnderstand, util.GetMessage(locale, DontUnderstand)
+			return DontUnderstand, util.GetMessage(locale, DontUnderstand), nil
 		}
 
 		// Set the actual context
@@ -100,16 +100,16 @@ func RandomizeResponse(locale, entry, tag, token string) (string, string) {
 			rand.Seed(time.Now().UnixNano())
 			response = intent.Responses[rand.Intn(len(intent.Responses))]
 		}
-
 		// And then apply the triggers on the message
-		return modules.ReplaceContent(locale, tag, entry, response, token)
+		tag, sentence := modules.ReplaceContent(locale, tag, entry, response, token)
+		return tag, sentence, &intent
 	}
 
-	return DontUnderstand, util.GetMessage(locale, DontUnderstand)
+	return DontUnderstand, util.GetMessage(locale, DontUnderstand), nil
 }
 
 // Calculate send the sentence content to the neural network and returns a response with the matching tag
-func (sentence Sentence) Calculate(cache gocache.Cache, neuralNetwork network.Network, token string) (string, string) {
+func (sentence Sentence) Calculate(cache gocache.Cache, neuralNetwork network.Network, token string) (string, string, *Intent) {
 	tag, found := cache.Get(sentence.Content)
 
 	// Predict tag with the neural network if the sentence isn't in the cache

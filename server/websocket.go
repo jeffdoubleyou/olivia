@@ -35,9 +35,10 @@ type RequestMessage struct {
 
 // ResponseMessage is the structure used to reply to the user through the websocket
 type ResponseMessage struct {
-	Content     string           `json:"content"`
-	Tag         string           `json:"tag"`
-	Information user.Information `json:"information"`
+	Content     string                 `json:"content"`
+	Tag         string                 `json:"tag"`
+	Information user.Information       `json:"information"`
+	Data        map[string]interface{} `json:"data"`
 }
 
 // SocketHandle manages the entry connections and reply with the neural network
@@ -100,6 +101,7 @@ func SocketHandle(w http.ResponseWriter, r *http.Request) {
 // Reply takes the entry message and returns an array of bytes for the answer
 func Reply(request RequestMessage) []byte {
 	var responseSentence, responseTag string
+	var intent *analysis.Intent
 
 	// Send a message from res/datasets/messages.json if it is too long
 	if len(request.Content) > 500 {
@@ -112,7 +114,7 @@ func Reply(request RequestMessage) []byte {
 			locale = "en"
 		}
 
-		responseTag, responseSentence = analysis.NewSentence(
+		responseTag, responseSentence, intent = analysis.NewSentence(
 			locale, request.Content,
 		).Calculate(*cache, neuralNetworks[locale], request.Token)
 	}
@@ -122,6 +124,7 @@ func Reply(request RequestMessage) []byte {
 		Content:     responseSentence,
 		Tag:         responseTag,
 		Information: user.GetUserInformation(request.Token),
+		Data:        intent.Data,
 	}
 
 	bytes, err := json.Marshal(response)

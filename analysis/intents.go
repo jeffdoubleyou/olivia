@@ -13,10 +13,11 @@ var intents = map[string][]Intent{}
 // Intent is a way to group sentences that mean the same thing and link them with a tag which
 // represents what they mean, some responses that the bot can reply and a context
 type Intent struct {
-	Tag       string   `json:"tag"`
-	Patterns  []string `json:"patterns"`
-	Responses []string `json:"responses"`
-	Context   string   `json:"context"`
+	Tag       string                 `json:"tag"`
+	Patterns  []string               `json:"patterns"`
+	Responses []string               `json:"responses"`
+	Context   string                 `json:"context"`
+	Data      map[string]interface{} `json:"data"`
 }
 
 // Document is any sentence from the intents' patterns linked with its tag
