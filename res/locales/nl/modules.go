@@ -1,7 +1,7 @@
 package en
 
 import (
-	"github.com/olivia-ai/olivia/modules"
+	"github.com/jeffdoubleyou/olivia/modules"
 )
 
 func init() {

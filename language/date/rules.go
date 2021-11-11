@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/util"
 )
 
 const day = time.Hour * 24

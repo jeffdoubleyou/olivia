@@ -7,12 +7,12 @@ import (
 	"sort"
 	"time"
 
-	"github.com/olivia-ai/olivia/locales"
+	"github.com/jeffdoubleyou/olivia/locales"
 
 	"github.com/gookit/color"
-	"github.com/olivia-ai/olivia/modules"
-	"github.com/olivia-ai/olivia/network"
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/modules"
+	"github.com/jeffdoubleyou/olivia/network"
+	"github.com/jeffdoubleyou/olivia/util"
 	gocache "github.com/patrickmn/go-cache"
 )
 

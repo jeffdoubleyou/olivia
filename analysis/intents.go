@@ -1,23 +1,23 @@
 package analysis
 
 import (
-	"encoding/json"
 	"sort"
 
-	"github.com/olivia-ai/olivia/modules"
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/modules"
+	"github.com/jeffdoubleyou/olivia/util"
 )
-
-var intents = map[string][]Intent{}
 
 // Intent is a way to group sentences that mean the same thing and link them with a tag which
 // represents what they mean, some responses that the bot can reply and a context
 type Intent struct {
+	Id        string                 `json:"_id"`
 	Tag       string                 `json:"tag"`
 	Patterns  []string               `json:"patterns"`
 	Responses []string               `json:"responses"`
 	Context   string                 `json:"context"`
 	Data      map[string]interface{} `json:"data"`
+	Locale    string                 `json:"locale"`
+	Language  string                 `json:"language"`
 }
 
 // Document is any sentence from the intents' patterns linked with its tag
@@ -25,6 +25,8 @@ type Document struct {
 	Sentence Sentence
 	Tag      string
 }
+
+var intents = map[string][]Intent{}
 
 // CacheIntents set the given intents to the global variable intents
 func CacheIntents(locale string, _intents []Intent) {
@@ -38,14 +40,12 @@ func GetIntents(locale string) []Intent {
 
 // SerializeIntents returns a list of intents retrieved from the given intents file
 func SerializeIntents(locale string) (_intents []Intent) {
-	err := json.Unmarshal(util.ReadFile("res/locales/"+locale+"/intents.json"), &_intents)
-	if err != nil {
+	if _intents, err := LoadIntents(locale); err != nil {
 		panic(err)
+	} else {
+		CacheIntents(locale, _intents)
+		return _intents
 	}
-
-	CacheIntents(locale, _intents)
-
-	return _intents
 }
 
 // SerializeModulesIntents retrieves all the registered modules and returns an array of Intents

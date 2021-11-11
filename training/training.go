@@ -2,12 +2,10 @@ package training
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/gookit/color"
-	"github.com/olivia-ai/olivia/analysis"
-	"github.com/olivia-ai/olivia/network"
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/analysis"
+	"github.com/jeffdoubleyou/olivia/network"
+	"github.com/jeffdoubleyou/olivia/util"
 )
 
 // TrainData returns the inputs and outputs for the neural network
@@ -33,27 +31,27 @@ func TrainData(locale string) (inputs, outputs [][]float64) {
 // trained from TrainData() inputs and targets.
 func CreateNeuralNetwork(locale string, ignoreTrainingFile bool) (neuralNetwork network.Network) {
 	// Decide if the network is created by the save or is a new one
-	saveFile := "res/locales/" + locale + "/training.json"
+	/*saveFile := "res/locales/" + locale + "/training.json"
 
-	_, err := os.Open(saveFile)
+	_, err := os.Open(saveFile)*/
+	net := network.LoadNetwork(locale)
+
 	// Train the model if there is no training file
-	if err != nil || ignoreTrainingFile {
+	if net == nil || ignoreTrainingFile {
 		inputs, outputs := TrainData(locale)
 
 		neuralNetwork = network.CreateNetwork(locale, 0.1, inputs, outputs, 50)
 		neuralNetwork.Train(200)
-
-		// Save the neural network in res/training.json
-		neuralNetwork.Save(saveFile)
+		neuralNetwork.Save()
 	} else {
 		fmt.Printf(
 			"%s %s\n",
 			color.FgBlue.Render("Loading the neural network from"),
-			color.FgRed.Render(saveFile),
+			color.FgRed.Render(locale),
 		)
 		// Initialize the intents
 		analysis.SerializeIntents(locale)
-		neuralNetwork = *network.LoadNetwork(saveFile)
+		neuralNetwork = *net
 	}
 
 	return

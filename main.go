@@ -6,18 +6,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/olivia-ai/olivia/locales"
-	"github.com/olivia-ai/olivia/training"
+	"github.com/jeffdoubleyou/olivia/locales"
+	"github.com/jeffdoubleyou/olivia/training"
 
-	"github.com/olivia-ai/olivia/dashboard"
+	"github.com/jeffdoubleyou/olivia/dashboard"
 
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/util"
 
 	"github.com/gookit/color"
 
-	"github.com/olivia-ai/olivia/network"
+	"github.com/jeffdoubleyou/olivia/network"
 
-	"github.com/olivia-ai/olivia/server"
+	"github.com/jeffdoubleyou/olivia/server"
 )
 
 var neuralNetworks = map[string]network.Network{}
@@ -27,7 +27,7 @@ func main() {
 	localesFlag := flag.String("re-train", "", "The locale(s) to re-train.")
 	flag.Parse()
 
-	// If the locales flag isn't empty then retrain the given models
+	// If the locales flag isn't empty then retrain the given dao
 	if *localesFlag != "" {
 		reTrainModels(*localesFlag)
 	}
@@ -59,13 +59,15 @@ func main() {
 
 // reTrainModels retrain the given locales
 func reTrainModels(localesFlag string) {
+	fmt.Printf("Re-train models...")
 	// Iterate locales by separating them by comma
 	for _, localeFlag := range strings.Split(localesFlag, ",") {
 		path := fmt.Sprintf("res/locales/%s/training.json", localeFlag)
+		fmt.Printf("Remove '%s'\n", path)
 		err := os.Remove(path)
 
 		if err != nil {
-			fmt.Printf("Cannot re-train %s model.", localeFlag)
+			fmt.Printf("Cannot re-train %s model: %s", localeFlag, err.Error())
 			return
 		}
 	}

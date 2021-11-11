@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/olivia-ai/olivia/language"
+	"github.com/jeffdoubleyou/olivia/language"
 
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/util"
 
-	"github.com/olivia-ai/olivia/user"
+	"github.com/jeffdoubleyou/olivia/user"
 
-	"github.com/olivia-ai/olivia/language/date"
+	"github.com/jeffdoubleyou/olivia/language/date"
 )
 
 var (

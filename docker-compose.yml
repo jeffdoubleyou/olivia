@@ -1,7 +1,7 @@
 version: '3'
 services:
   olivia-ai.org:
-    image: "docker.pkg.github.com/olivia-ai/olivia-ai.org/olivia-ai.org:latest"
+    image: "docker.pkg.github.com/jeffdoubleyou/olivia-ai.org/olivia-ai.org:latest"
     build:
       context: .
       args:
@@ -11,7 +11,7 @@ services:
     ports:
       - "80:80"
   olivia:
-    image: "docker.pkg.github.com/olivia-ai/olivia/olivia:latest"
+    image: "docker.pkg.github.com/jeffdoubleyou/olivia/olivia:latest"
     environment:
       - PORT=8080
     ports:

@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/util"
 
 	"github.com/gorilla/mux"
 
 	"github.com/gookit/color"
-	"github.com/olivia-ai/olivia/analysis"
+	"github.com/jeffdoubleyou/olivia/analysis"
 )
 
 // An Error is what the api replies when an error occurs
@@ -27,7 +27,6 @@ type DeleteRequest struct {
 // WriteIntents writes the given intents to the intents file
 func WriteIntents(locale string, intents []analysis.Intent) {
 	analysis.CacheIntents(locale, intents)
-
 	// Encode the json
 	bytes, _ := json.MarshalIndent(intents, "", "  ")
 
@@ -44,9 +43,10 @@ func WriteIntents(locale string, intents []analysis.Intent) {
 
 // AddIntent adds the given intent to the intents file
 func AddIntent(locale string, intent analysis.Intent) {
-	intents := append(analysis.SerializeIntents(locale), intent)
-
-	WriteIntents(locale, intents)
+	intent.Locale = locale
+	//intents := append(analysis.SerializeIntents(locale), intent)
+	analysis.AddIntent(&intent)
+	//WriteIntents(locale, intents)
 
 	fmt.Printf("Added %s intent.\n", color.FgMagenta.Render(intent.Tag))
 }

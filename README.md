@@ -7,14 +7,14 @@
 <h4 align="center">💁‍♀️ Your new best friend</h4>
 
 <p align="center">
-  <a href="https://goreportcard.com/report/github.com/olivia-ai/olivia"><img src="https://goreportcard.com/badge/github.com/olivia-ai/olivia"></a>
-  <a href="https://godoc.org/github.com/olivia-ai/olivia"><img src="https://godoc.org/github.com/olivia-ai/olivia?status.svg" alt="GoDoc"></a>
+  <a href="https://goreportcard.com/report/github.com/jeffdoubleyou/olivia"><img src="https://goreportcard.com/badge/github.com/jeffdoubleyou/olivia"></a>
+  <a href="https://godoc.org/github.com/jeffdoubleyou/olivia"><img src="https://godoc.org/github.com/jeffdoubleyou/olivia?status.svg" alt="GoDoc"></a>
   <a href="https://app.fossa.io/projects/git%2Bgithub.com%2Folivia-ai%2Folivia?ref=badge_shield"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Folivia-ai%2Folivia.svg?type=shield"></a>
   <a href="https://codecov.io/gh/olivia-ai/olivia"><img src="https://codecov.io/gh/olivia-ai/olivia/branch/master/graph/badge.svg" /></a>
   <br>
-  <img src="https://github.com/olivia-ai/olivia/workflows/Code%20coverage/badge.svg">
-  <img src="https://github.com/olivia-ai/olivia/workflows/Docker%20CI/badge.svg">
-  <img src="https://github.com/olivia-ai/olivia/workflows/Format%20checker/badge.svg">
+  <img src="https://github.com/jeffdoubleyou/olivia/workflows/Code%20coverage/badge.svg">
+  <img src="https://github.com/jeffdoubleyou/olivia/workflows/Docker%20CI/badge.svg">
+  <img src="https://github.com/jeffdoubleyou/olivia/workflows/Format%20checker/badge.svg">
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@
 </p>
 
 <p align="center">
-  ⚠️ Please check the <strong><a href="https://github.com/olivia-ai/olivia/issues">Call for contributors</a></strong>
+  ⚠️ Please check the <strong><a href="https://github.com/jeffdoubleyou/olivia/issues">Call for contributors</a></strong>
 </p>
 
 ## Introduction
@@ -51,7 +51,7 @@ Its goal is to provide a free and open-source alternative to big services like D
 
 You can chat with her by speaking (STT) or writing, she replies with a text message but you can enable her voice (TTS).
 
-You can clone the project and customize it as you want using [GitHub](https://github.com/olivia-ai/olivia)
+You can clone the project and customize it as you want using [GitHub](https://github.com/jeffdoubleyou/olivia)
 Try it on [her website!](https://olivia-ai.org)
 
 ### Why Olivia?
@@ -87,12 +87,12 @@ $ echo $PAT | docker login docker.pkg.github.com -u USERNAME --password-stdin
 
 Pull the image from GitHub Packages
 ```bash
-$ docker pull docker.pkg.github.com/olivia-ai/olivia/olivia:latest
+$ docker pull docker.pkg.github.com/jeffdoubleyou/olivia/olivia:latest
 ```
 
 Then start it
 ```bash
-$ docker run -d -e PORT=8080 -p 8080:8080 docker.pkg.github.com/olivia-ai/olivia/olivia:latest
+$ docker run -d -e PORT=8080 -p 8080:8080 docker.pkg.github.com/jeffdoubleyou/olivia/olivia:latest
 ```
 
 You can just use the websocket of Olivia now.
@@ -184,7 +184,7 @@ Please refer to the [contributing file](.github/CONTRIBUTING.md)
 Thanks to the people who contribute to Olivia. 
 
 [Contribute](.github/CONTRIBUTING.md)
-<a href="https://github.com/olivia-ai/olivia/graphs/contributors"><img src="https://opencollective.com/olivia-ai/contributors.svg?width=950&button=false" /></a>
+<a href="https://github.com/jeffdoubleyou/olivia/graphs/contributors"><img src="https://opencollective.com/olivia-ai/contributors.svg?width=950&button=false" /></a>
 
 ### Financial Contributors
 Become a financial contributor and help Olivia growth. 

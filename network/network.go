@@ -1,13 +1,11 @@
 package network
 
 import (
-	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"time"
 
-	"github.com/olivia-ai/olivia/locales"
+	"github.com/jeffdoubleyou/olivia/locales"
 
 	"github.com/gookit/color"
 	"gopkg.in/cheggaaa/pb.v1"
@@ -24,24 +22,34 @@ type Network struct {
 	Errors  []float64
 	Time    float64
 	Locale  string
+	Rev     string `json:"_rev"`
 }
 
 // LoadNetwork returns a Network from a specified file
-func LoadNetwork(fileName string) *Network {
-	inF, err := os.Open(fileName)
-	if err != nil {
-		panic("Failed to load " + fileName + ".")
-	}
-	defer inF.Close()
-
-	decoder := json.NewDecoder(inF)
-	neuralNetwork := &Network{}
-	err = decoder.Decode(neuralNetwork)
-	if err != nil {
+func LoadNetwork(locale string) *Network {
+	fmt.Printf("Loading network for locale %s\n", locale)
+	if net, err := GetNetworkFromDb(locale); err != nil {
 		panic(err)
+	} else {
+		return net
 	}
+	/*
+		inF, err := os.Open(fileName)
+		if err != nil {
+			panic("Failed to load " + fileName + ".")
+		}
+		defer inF.Close()
 
-	return neuralNetwork
+		decoder := json.NewDecoder(inF)
+		neuralNetwork := &Network{}
+		err = decoder.Decode(neuralNetwork)
+		if err != nil {
+			panic(err)
+		}
+
+		return neuralNetwork
+
+	*/
 }
 
 // CreateNetwork creates the network by generating the layers, weights and biases
@@ -86,18 +94,26 @@ func CreateNetwork(locale string, rate float64, input, output Matrix, hiddensNod
 }
 
 // Save saves the neural network in a specified file which can be retrieved with LoadNetwork
-func (network Network) Save(fileName string) {
-	outF, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0777)
-	if err != nil {
-		panic("Failed to save the network to " + fileName + ".")
-	}
-	defer outF.Close()
-
-	encoder := json.NewEncoder(outF)
-	err = encoder.Encode(network)
-	if err != nil {
+func (network Network) Save() {
+	fmt.Printf("Saving network for locale '%s' over '%s'\n", network.Locale, network.Rev)
+	if err := AddNetworkToDB(network.Locale, network); err != nil {
 		panic(err)
 	}
+
+	/*
+		outF, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0777)
+		if err != nil {
+			panic("Failed to save the network to " + fileName + ".")
+		}
+		defer outF.Close()
+
+		encoder := json.NewEncoder(outF)
+		err = encoder.Encode(network)
+		if err != nil {
+			panic(err)
+		}
+
+	*/
 }
 
 // FeedForward executes forward propagation for the given inputs in the network
@@ -200,6 +216,5 @@ func (network *Network) Train(iterations int) {
 	elapsed := time.Since(start)
 	// Round the elapsed date at two decimals
 	network.Time = math.Floor(elapsed.Seconds()*100) / 100
-
 	fmt.Printf("The error rate is %s.\n", color.FgGreen.Render(arrangedError))
 }

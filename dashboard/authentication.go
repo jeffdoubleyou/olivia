@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/util"
 
 	"github.com/gookit/color"
 

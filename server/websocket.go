@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"reflect"
 
-	"github.com/olivia-ai/olivia/locales"
+	"github.com/jeffdoubleyou/olivia/locales"
 
-	"github.com/olivia-ai/olivia/modules/start"
+	"github.com/jeffdoubleyou/olivia/modules/start"
 
 	"github.com/gookit/color"
 	"github.com/gorilla/websocket"
-	"github.com/olivia-ai/olivia/analysis"
-	"github.com/olivia-ai/olivia/user"
-	"github.com/olivia-ai/olivia/util"
+	"github.com/jeffdoubleyou/olivia/analysis"
+	"github.com/jeffdoubleyou/olivia/user"
+	"github.com/jeffdoubleyou/olivia/util"
 )
 
 // Configure the upgrader
@@ -124,7 +124,10 @@ func Reply(request RequestMessage) []byte {
 		Content:     responseSentence,
 		Tag:         responseTag,
 		Information: user.GetUserInformation(request.Token),
-		Data:        intent.Data,
+	}
+
+	if intent != nil {
+		response.Data = intent.Data
 	}
 
 	bytes, err := json.Marshal(response)

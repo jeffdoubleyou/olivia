@@ -11,9 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the image
-        run: docker build -t docker.pkg.github.com/olivia-ai/olivia/olivia:latest .
+        run: docker build -t docker.pkg.github.com/jeffdoubleyou/olivia/olivia:latest .
       - name: Save the image
-        run: docker save -o image.tar docker.pkg.github.com/olivia-ai/olivia/olivia:latest
+        run: docker save -o image.tar docker.pkg.github.com/jeffdoubleyou/olivia/olivia:latest
       - name: Upload image to artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -34,5 +34,5 @@ jobs:
       - name: Login to docker.pkg.github.com
         run: echo ${{ secrets.TOKEN }} | docker login docker.pkg.github.com --username ${{ secrets.USERNAME }} --password-stdin
       - name: Publish the image
-        run: docker push docker.pkg.github.com/olivia-ai/olivia/olivia:latest
+        run: docker push docker.pkg.github.com/jeffdoubleyou/olivia/olivia:latest
         

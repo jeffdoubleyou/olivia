@@ -5,7 +5,7 @@
 # Contributing 💁‍♀️
 
 ## Finding issues to resolve
-For those who would like to contribute to Olivia, first of all, look at open issues and issues that require help noted as [good first issues](https://github.com/olivia-ai/olivia/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+For those who would like to contribute to Olivia, first of all, look at open issues and issues that require help noted as [good first issues](https://github.com/jeffdoubleyou/olivia/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ## Reporting a bug
 If you find a bug in Olivia, please open an issue and respect the Bug Report template.
