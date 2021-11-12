@@ -33,23 +33,6 @@ func LoadNetwork(locale string) *Network {
 	} else {
 		return net
 	}
-	/*
-		inF, err := os.Open(fileName)
-		if err != nil {
-			panic("Failed to load " + fileName + ".")
-		}
-		defer inF.Close()
-
-		decoder := json.NewDecoder(inF)
-		neuralNetwork := &Network{}
-		err = decoder.Decode(neuralNetwork)
-		if err != nil {
-			panic(err)
-		}
-
-		return neuralNetwork
-
-	*/
 }
 
 // CreateNetwork creates the network by generating the layers, weights and biases
@@ -99,21 +82,6 @@ func (network Network) Save() {
 	if err := AddNetworkToDB(network.Locale, network); err != nil {
 		panic(err)
 	}
-
-	/*
-		outF, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0777)
-		if err != nil {
-			panic("Failed to save the network to " + fileName + ".")
-		}
-		defer outF.Close()
-
-		encoder := json.NewEncoder(outF)
-		err = encoder.Encode(network)
-		if err != nil {
-			panic(err)
-		}
-
-	*/
 }
 
 // FeedForward executes forward propagation for the given inputs in the network

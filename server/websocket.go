@@ -30,6 +30,7 @@ type RequestMessage struct {
 	Content     string           `json:"content"`
 	Token       string           `json:"user_token"`
 	Locale      string           `json:"locale"`
+	Language    string           `json:"language"`
 	Information user.Information `json:"information"`
 }
 
@@ -108,14 +109,15 @@ func Reply(request RequestMessage) []byte {
 		responseTag = "too long"
 		responseSentence = util.GetMessage(request.Locale, responseTag)
 	} else {
-		// If the given locale is not supported yet, set english
+		// If the given language is not supported yet, set english
 		locale := request.Locale
-		if !locales.Exists(locale) {
-			locale = "en"
+		language := request.Language
+		if !locales.Exists(language) {
+			language = "en"
 		}
 
 		responseTag, responseSentence, intent = analysis.NewSentence(
-			locale, request.Content,
+			language, request.Content,
 		).Calculate(*cache, neuralNetworks[locale], request.Token)
 	}
 
