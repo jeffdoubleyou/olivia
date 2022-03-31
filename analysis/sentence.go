@@ -45,8 +45,8 @@ func NewSentence(locale, content string) (sentence Sentence) {
 }
 
 // PredictTag classifies the sentence with the model
-func (sentence Sentence) PredictTag(neuralNetwork network.Network) string {
-	words, classes, _ := Organize(sentence.Locale)
+func (sentence Sentence) PredictTag(neuralNetwork network.Network, context ...string) string {
+	words, classes, _ := Organize(sentence.Locale, context...)
 
 	// Predict with the model
 	predict := neuralNetwork.Predict(sentence.WordsBag(words))
@@ -108,14 +108,19 @@ func RandomizeResponse(locale, entry, tag, token string) (string, string, *Inten
 	return DontUnderstand, util.GetMessage(locale, DontUnderstand), nil
 }
 
+// TODO: Add context
 // Calculate send the sentence content to the neural network and returns a response with the matching tag
-func (sentence Sentence) Calculate(cache gocache.Cache, neuralNetwork network.Network, token string) (string, string, *Intent) {
-	tag, found := cache.Get(sentence.Content)
+func (sentence Sentence) Calculate(cache gocache.Cache, neuralNetwork network.Network, token string, context ...string) (string, string, *Intent) {
+	tagCache := sentence.Content
+	if len(context) == 1 {
+		tagCache += "_" + context[0]
+	}
+	tag, found := cache.Get(tagCache)
 
 	// Predict tag with the neural network if the sentence isn't in the cache
 	if !found {
-		tag = sentence.PredictTag(neuralNetwork)
-		cache.Set(sentence.Content, tag, gocache.DefaultExpiration)
+		tag = sentence.PredictTag(neuralNetwork, context...)
+		cache.Set(tagCache, tag, gocache.DefaultExpiration)
 	}
 
 	return RandomizeResponse(sentence.Locale, sentence.Content, tag.(string), token)

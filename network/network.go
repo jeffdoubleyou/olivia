@@ -29,7 +29,7 @@ type Network struct {
 func LoadNetwork(locale string) *Network {
 	fmt.Printf("Loading network for locale %s\n", locale)
 	if net, err := GetNetworkFromDb(locale); err != nil {
-		panic(err)
+		return nil
 	} else {
 		return net
 	}
@@ -37,6 +37,7 @@ func LoadNetwork(locale string) *Network {
 
 // CreateNetwork creates the network by generating the layers, weights and biases
 func CreateNetwork(locale string, rate float64, input, output Matrix, hiddensNodes ...int) Network {
+	fmt.Printf("Create network for locale '%s'", locale)
 	input = append([][]float64{
 		make([]float64, len(input[0])),
 	}, input...)
@@ -88,7 +89,6 @@ func (network Network) Save() {
 func (network *Network) FeedForward() {
 	for i := 0; i < len(network.Layers)-1; i++ {
 		layer, weights, biases := network.Layers[i], network.Weights[i], network.Biases[i]
-
 		productMatrix := DotProduct(layer, weights)
 		Sum(productMatrix, biases)
 		ApplyFunction(productMatrix, Sigmoid)
@@ -150,7 +150,7 @@ func (network *Network) Train(iterations int) {
 	bar := pb.New(iterations).Postfix(fmt.Sprintf(
 		" - %s %s %s",
 		color.FgBlue.Render("Training the"),
-		color.FgRed.Render(locales.GetNameByTag(network.Locale)),
+		color.FgRed.Render(network.Locale+" - "+locales.GetNameByTag(network.Locale)),
 		color.FgBlue.Render("neural network"),
 	))
 	bar.Format("(██░)")

@@ -1,5 +1,7 @@
 package modules
 
+import "fmt"
+
 // Module is a structure for dynamic intents with a Tag, some Patterns and Responses and
 // a Replacer function to execute the dynamic changes.
 type Module struct {
@@ -29,6 +31,7 @@ func GetModules(locale string) []Module {
 
 // GetModuleByTag returns a module found by the given tag and locale
 func GetModuleByTag(tag, locale string) Module {
+	fmt.Printf("Get modules by tag %s for locale %s\n", tag, locale)
 	for _, module := range modules[locale] {
 		if tag != module.Tag {
 			continue

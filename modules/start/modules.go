@@ -33,7 +33,8 @@ func GetMessage() string {
 
 // ExecuteModules will execute all the registered start modules with the user token
 func ExecuteModules(token, locale string) {
-	fmt.Println(color.FgGreen.Render("Executing start modules.."))
+	fmt.Printf("Start %s for %s\n", locale, token)
+	fmt.Printf(color.FgGreen.Render("Executing start modules for locale %s..\n"), locale)
 
 	for _, module := range modules {
 		module.Action(token, locale)

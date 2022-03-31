@@ -39,7 +39,10 @@ func CreateNeuralNetwork(locale string, ignoreTrainingFile bool) (neuralNetwork 
 	// Train the model if there is no training file
 	if net == nil || ignoreTrainingFile {
 		inputs, outputs := TrainData(locale)
-
+		fmt.Printf("Inputs: %d Outputs: %d\n", len(inputs), len(outputs))
+		if len(inputs) == 0 || len(inputs) != len(outputs) {
+			return
+		}
 		neuralNetwork = network.CreateNetwork(locale, 0.1, inputs, outputs, 50)
 		neuralNetwork.Train(200)
 		neuralNetwork.Save()

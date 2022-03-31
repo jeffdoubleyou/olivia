@@ -1,6 +1,7 @@
 package analysis
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/jeffdoubleyou/olivia/modules"
@@ -40,9 +41,11 @@ func GetIntents(locale string) []Intent {
 
 // SerializeIntents returns a list of intents retrieved from the given intents file
 func SerializeIntents(locale string) (_intents []Intent) {
+	fmt.Printf("Serialize intents for %s\n", locale)
 	if _intents, err := LoadIntents(locale); err != nil {
 		panic(err)
 	} else {
+		fmt.Printf("Found %d intents for %s\n", len(_intents), locale)
 		CacheIntents(locale, _intents)
 		return _intents
 	}
@@ -50,7 +53,9 @@ func SerializeIntents(locale string) (_intents []Intent) {
 
 // SerializeModulesIntents retrieves all the registered modules and returns an array of Intents
 func SerializeModulesIntents(locale string) []Intent {
+	fmt.Printf("Serialize module intents for %s\n", locale)
 	registeredModules := modules.GetModules(locale)
+	fmt.Printf("Number of modules in %s: %d\n", locale, len(registeredModules))
 	intents := make([]Intent, len(registeredModules))
 
 	for k, module := range registeredModules {
@@ -58,7 +63,7 @@ func SerializeModulesIntents(locale string) []Intent {
 			Tag:       module.Tag,
 			Patterns:  module.Patterns,
 			Responses: module.Responses,
-			Context:   "",
+			Context:   "application",
 		}
 	}
 
@@ -67,6 +72,7 @@ func SerializeModulesIntents(locale string) []Intent {
 
 // GetIntentByTag returns an intent found by given tag and locale
 func GetIntentByTag(tag, locale string) Intent {
+	fmt.Printf("Get intent by tag %s in locale %s", tag, locale)
 	for _, intent := range GetIntents(locale) {
 		if tag != intent.Tag {
 			continue
@@ -80,7 +86,8 @@ func GetIntentByTag(tag, locale string) Intent {
 
 // Organize intents with an array of all words, an array with a representative word of each tag
 // and an array of Documents which contains a word list associated with a tag
-func Organize(locale string) (words, classes []string, documents []Document) {
+func Organize(locale string, intentContext ...string) (words, classes []string, documents []Document) {
+	fmt.Printf("Organize %s\n", locale)
 	// Append the modules intents to the intents from res/datasets/intents.json
 	intents := append(
 		SerializeIntents(locale),
@@ -88,6 +95,10 @@ func Organize(locale string) (words, classes []string, documents []Document) {
 	)
 
 	for _, intent := range intents {
+		if len(intentContext) == 1 && intent.Context != intentContext[0] {
+			fmt.Printf("Skipping intent out of context %s != %s\n", intent.Context, intentContext[0])
+			continue
+		}
 		for _, pattern := range intent.Patterns {
 			// Tokenize the pattern's sentence
 			patternSentence := Sentence{locale, pattern}

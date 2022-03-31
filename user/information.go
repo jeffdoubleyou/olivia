@@ -6,13 +6,14 @@ import (
 
 // Information is the user's information retrieved from the client
 type Information struct {
-	Name           string        `json:"name"`
-	MovieGenres    []string      `json:"movie_genres"`
-	MovieBlacklist []string      `json:"movie_blacklist"`
-	Reminders      []Reminder    `json:"reminders"`
-	SpotifyToken   *oauth2.Token `json:"spotify_token"`
-	SpotifyID      string        `json:"spotify_id"`
-	SpotifySecret  string        `json:"spotify_secret"`
+	Name           string                 `json:"name"`
+	MovieGenres    []string               `json:"movie_genres"`
+	MovieBlacklist []string               `json:"movie_blacklist"`
+	Reminders      []Reminder             `json:"reminders"`
+	SpotifyToken   *oauth2.Token          `json:"spotify_token"`
+	SpotifyID      string                 `json:"spotify_id"`
+	SpotifySecret  string                 `json:"spotify_secret"`
+	SessionData    map[string]interface{} `json:"session_data"`
 }
 
 // A Reminder is something the user asked for Olivia to remember

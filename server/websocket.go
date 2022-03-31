@@ -32,6 +32,7 @@ type RequestMessage struct {
 	Locale      string           `json:"locale"`
 	Language    string           `json:"language"`
 	Information user.Information `json:"information"`
+	Context     string           `json:"context"`
 }
 
 // ResponseMessage is the structure used to reply to the user through the websocket
@@ -65,6 +66,9 @@ func SocketHandle(w http.ResponseWriter, r *http.Request) {
 			user.SetUserInformation(request.Token, request.Information)
 		}
 
+		j, _ := json.MarshalIndent(request, "", "\t")
+		fmt.Printf("REQUEST: %s\n", j)
+		//request.Locale = "1212"
 		// If the type of requests is a handshake then execute the start modules
 		if request.Type == 0 {
 			start.ExecuteModules(request.Token, request.Locale)
@@ -93,6 +97,9 @@ func SocketHandle(w http.ResponseWriter, r *http.Request) {
 
 		// Write message back to browser
 		response := Reply(request)
+		r, _ := json.MarshalIndent(response, "", "\t")
+		fmt.Printf("RESPONSE: %s\n", r)
+
 		if err = conn.WriteMessage(msgType, response); err != nil {
 			continue
 		}
@@ -103,7 +110,6 @@ func SocketHandle(w http.ResponseWriter, r *http.Request) {
 func Reply(request RequestMessage) []byte {
 	var responseSentence, responseTag string
 	var intent *analysis.Intent
-
 	// Send a message from res/datasets/messages.json if it is too long
 	if len(request.Content) > 500 {
 		responseTag = "too long"
@@ -113,12 +119,18 @@ func Reply(request RequestMessage) []byte {
 		locale := request.Locale
 		language := request.Language
 		if !locales.Exists(language) {
-			language = "en"
+			language = locale
 		}
 
-		responseTag, responseSentence, intent = analysis.NewSentence(
-			language, request.Content,
-		).Calculate(*cache, neuralNetworks[locale], request.Token)
+		if request.Context != "" {
+			responseTag, responseSentence, intent = analysis.NewSentence(
+				language, request.Content,
+			).Calculate(*cache, neuralNetworks[locale], request.Token, request.Context)
+		} else {
+			responseTag, responseSentence, intent = analysis.NewSentence(
+				language, request.Content,
+			).Calculate(*cache, neuralNetworks[locale], request.Token)
+		}
 	}
 
 	// Marshall the response in json
@@ -137,5 +149,6 @@ func Reply(request RequestMessage) []byte {
 		panic(err)
 	}
 
+	fmt.Printf("Res: %s\n", bytes)
 	return bytes
 }

@@ -27,9 +27,10 @@ func main() {
 	localesFlag := flag.String("re-train", "", "The locale(s) to re-train.")
 	flag.Parse()
 
+	retrain := false
 	// If the locales flag isn't empty then retrain the given dao
 	if *localesFlag != "" {
-		reTrainModels(*localesFlag)
+		retrain = true
 	}
 
 	// Print the Olivia ascii text
@@ -44,7 +45,7 @@ func main() {
 
 		neuralNetworks[locale.Tag] = training.CreateNeuralNetwork(
 			locale.Tag,
-			false,
+			retrain,
 		)
 	}
 

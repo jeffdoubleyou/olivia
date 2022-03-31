@@ -90,13 +90,13 @@ func CreateIntent(w http.ResponseWriter, r *http.Request) {
 	data := mux.Vars(r)
 
 	// Checks if the token present in the headers is the right one
-	token := r.Header.Get("Olivia-Token")
+	/*token := r.Header.Get("Olivia-Token")
 	if !ChecksToken(token) {
 		json.NewEncoder(w).Encode(Error{
 			Message: util.GetMessage(data["locale"], "no permission"),
 		})
 		return
-	}
+	}*/
 
 	// Decode request json body
 	var intent analysis.Intent
@@ -136,13 +136,13 @@ func DeleteIntent(w http.ResponseWriter, r *http.Request) {
 	data := mux.Vars(r)
 
 	// Checks if the token present in the headers is the right one
-	token := r.Header.Get("Olivia-Token")
+	/*token := r.Header.Get("Olivia-Token")
 	if !ChecksToken(token) {
 		json.NewEncoder(w).Encode(Error{
 			Message: util.GetMessage(data["locale"], "no permission"),
 		})
 		return
-	}
+	}*/
 
 	var deleteRequest DeleteRequest
 	json.NewDecoder(r.Body).Decode(&deleteRequest)

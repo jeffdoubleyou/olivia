@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -18,9 +19,11 @@ var messages = map[string][]Message{}
 // SerializeMessages serializes the content of `res/datasets/messages.json` in JSON
 func SerializeMessages(locale string) []Message {
 	var currentMessages []Message
-	err := json.Unmarshal(ReadFile("res/locales/"+locale+"/messages.json"), &currentMessages)
-	if err != nil {
-		fmt.Println(err)
+	if _, err := os.Stat("res/locales/" + locale + "/messages.json"); err == nil {
+		err := json.Unmarshal(ReadFile("res/locales/"+locale+"/messages.json"), &currentMessages)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	messages[locale] = currentMessages

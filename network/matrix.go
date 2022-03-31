@@ -1,6 +1,7 @@
 package network
 
 import (
+	"fmt"
 	"math/rand"
 )
 
@@ -70,7 +71,9 @@ func ApplyRate(matrix Matrix, rate float64) Matrix {
 
 // DotProduct returns a matrix which is the result of the dot product between matrix and matrix2
 func DotProduct(matrix, matrix2 Matrix) Matrix {
+
 	if Columns(matrix) != Rows(matrix2) {
+		fmt.Printf("Columns %d != Rows %d\n", Columns(matrix), Rows(matrix2))
 		panic("Cannot make dot product between these two matrix.")
 	}
 

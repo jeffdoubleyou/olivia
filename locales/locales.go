@@ -1,6 +1,10 @@
 package locales
 
 import (
+	"context"
+	"fmt"
+	"github.com/jeffdoubleyou/olivia/database"
+	_ "github.com/jeffdoubleyou/olivia/res/locales/c1212"
 	// Import these packages to trigger the init() function
 	_ "github.com/jeffdoubleyou/olivia/res/locales/ca"
 	_ "github.com/jeffdoubleyou/olivia/res/locales/de"
@@ -13,47 +17,32 @@ import (
 	_ "github.com/jeffdoubleyou/olivia/res/locales/tr"
 )
 
+var Locales []Locale
+
+func init() {
+	fmt.Printf("Initializing Locales..........\n")
+	// http://localhost:5984/intents/_design/locales/_view/list?limit=20&reduce=true&group_level=1
+	if rows, err := database.Db("intents").Query(context.TODO(), "_design/locales", "_view/list", map[string]interface{}{"group": true}); err != nil {
+		panic(err)
+	} else {
+		for rows.Next() {
+			var l string
+			if err := rows.ScanKey(&l); err != nil {
+				fmt.Printf("Failed to read row: %s\n", err.Error())
+			} else {
+				// TODO Register modules
+				Locales = append(Locales, Locale{l, l})
+			}
+		}
+	}
+	for _, locale := range Locales {
+		fmt.Printf("Found locale: %s\n", locale.Name)
+	}
+}
+
 // Locales is the list of locales's tags and names
 // Please check if the language is supported in https://github.com/tebeka/snowball,
 // if it is please add the correct language name.
-var Locales = []Locale{
-	{
-		Tag:  "en",
-		Name: "english",
-	},
-	{
-		Tag:  "de",
-		Name: "german",
-	},
-	{
-		Tag:  "fr",
-		Name: "french",
-	},
-	{
-		Tag:  "es",
-		Name: "spanish",
-	},
-	{
-		Tag:  "ca",
-		Name: "catalan",
-	},
-	{
-		Tag:  "it",
-		Name: "italian",
-	},
-	{
-		Tag:  "tr",
-		Name: "turkish",
-	},
-	{
-		Tag:  "nl",
-		Name: "dutch",
-	},
-	{
-		Tag:  "el",
-		Name: "greek",
-	},
-}
 
 // A Locale is a registered locale in the file
 type Locale struct {
